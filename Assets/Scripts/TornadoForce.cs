@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TornadoForce : MonoBehaviour {
     public Transform tornadoCenter;
@@ -8,14 +9,15 @@ public class TornadoForce : MonoBehaviour {
 
     private bool isAttracting = false;
 
+
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Box")) {
+        if (other.CompareTag("Player")) {
             StartCoroutine(ApplyTornadoForce(other.gameObject));
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Box")) {
+        if (other.CompareTag("Player")) {
             isAttracting = false;
         }
     }

@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlataformMove : MonoBehaviour {
-    [SerializeField] private float rotationSpeed = 50f;
+    public float maxRotationX = 45f;
+    public float maxRotationZ = 45f;
+    public float rotationSpeed = 5f;
 
     void Update() {
-        HandleInput();
-    }
 
-    void HandleInput() {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float rotationX = Input.GetAxis("Vertical") * maxRotationX;
+        rotationX = Mathf.Clamp(rotationX, -maxRotationX, maxRotationX);
+        Quaternion newRotationX = Quaternion.Euler(rotationX, 0f, 0f);
 
-        if (horizontalInput != 0 || verticalInput != 0) {
-            float rotationAmount = rotationSpeed * Time.deltaTime;
-            Vector3 rotation = new Vector3(verticalInput, 0, -horizontalInput) * rotationAmount;
-            transform.Rotate(rotation);
-        }
+
+        float rotationZ = Input.GetAxis("Horizontal") * maxRotationZ;
+        rotationZ = Mathf.Clamp(rotationZ, -maxRotationZ, maxRotationZ);
+        Quaternion newRotationZ = Quaternion.Euler(0f, 0f, rotationZ);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, newRotationX * newRotationZ, rotationSpeed * Time.deltaTime);
     }
 }
